@@ -1,16 +1,45 @@
 import { sql } from "drizzle-orm";
 import { db } from "@/db";
+"use client";
 
 import { Label } from "@/components/ui/label";
 import { Input } from "../../../components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 
+import SubmitButton from "@/components/SubmitButton";
+
+
 
 import { crearAccion } from "../../../../acciones";
+import { SyntheticEvent, useState, startTransition } from "react";
+
+import Form from 'next/form';
   
 
-export default async function Home() {
+
+export default function Home() {
+
+    const [estado, setEstado] = useState('listo');
+    async function manejoEnvio(event: SyntheticEvent) {
+        if ( estado === 'pendiente') {
+            event.preventDefault();
+            return;
+        }
+        setEstado('pendiente');
+        /* event.preventDefault();
+        if (estado === 'pendiente') return;
+        setEstado('pendiente');
+        const target = event.target as HTMLFormElement; */
+
+        /* startTransition(async () => {
+            const formData = new FormData(target);
+            await crearAccion(formData);
+            console.log('hey');
+        }) */
+             
+    }
+    
 
     /* const resultados = await db.execute(sql `SELECT current_database()`)
     console.log('resultados:', resultados);
@@ -24,7 +53,7 @@ export default async function Home() {
 
             </div>
             {/* {JSON.stringify(resultados)} */}
-            <form action={crearAccion} className="grid gap-4 max-w-xs">
+            <Form action={crearAccion} onSubmit={manejoEnvio} className="grid gap-4 max-w-xs">
                 <div>
                     <Label htmlFor="nombre" className="block font-semibold text-sm mb-2" >Nombre Factura</Label>
                     <Input id="nombre" name="nombre" type="text"></Input>
@@ -42,11 +71,12 @@ export default async function Home() {
                     <Textarea id="descripcion" name="descripcion"></Textarea>
                 </div>
                 <div>
-                    <Button className="w-full font-semibold">
+                    {/* <Button className="w-full font-semibold">
                         Enviar
-                    </Button>
+                    </Button> */}
+                    <SubmitButton />
                 </div>
-            </form>
+            </Form>
 
 
 
