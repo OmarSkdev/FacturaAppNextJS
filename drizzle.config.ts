@@ -1,7 +1,7 @@
 import { defineConfig } from "drizzle-kit";
-import * as dotenv from "dotenv";
+import 'dotenv/config'
 
-dotenv.config({
+require('dotenv').config({
     path: './.env.local'
 })
 if ( typeof process.env.XATA_DATABASE_URL !== 'string') {
@@ -11,7 +11,7 @@ if ( typeof process.env.XATA_DATABASE_URL !== 'string') {
 export default defineConfig({
   dialect: 'postgresql', // 'mysql' | 'sqlite' | 'turso'
   schema: './src/db/schema.ts',
-  out: './src/db/migrations',
+  out: './src/db/migraciones',
   dbCredentials:{
     url: String(process.env.XATA_DATABASE_URL)
   }

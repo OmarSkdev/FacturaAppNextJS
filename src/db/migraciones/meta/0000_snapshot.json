@@ -1,5 +1,5 @@
 {
-  "id": "e3eea426-90f2-438c-9797-42bab512a471",
+  "id": "13f9b6b2-ff26-4a27-b2b1-5833faa79683",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -27,12 +27,18 @@
           "primaryKey": false,
           "notNull": true
         },
+        "descripcion": {
+          "name": "descripcion",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
         "estados": {
           "name": "estados",
           "type": "estados",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         }
       },
       "indexes": {},

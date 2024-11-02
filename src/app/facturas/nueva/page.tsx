@@ -7,14 +7,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 
 
-
+import { crearAccion } from "../../../../acciones";
   
 
 export default async function Home() {
 
-    const resultados = await db.execute(sql `SELECT current_database()`)
+    /* const resultados = await db.execute(sql `SELECT current_database()`)
     console.log('resultados:', resultados);
-    
+     */
 
     return (
 
@@ -23,8 +23,8 @@ export default async function Home() {
                 <h1 className="text-3xl font-semibold">Crear Factura</h1>
 
             </div>
-            {JSON.stringify(resultados)}
-            <form className="grid gap-4 max-w-xs">
+            {/* {JSON.stringify(resultados)} */}
+            <form action={crearAccion} className="grid gap-4 max-w-xs">
                 <div>
                     <Label htmlFor="nombre" className="block font-semibold text-sm mb-2" >Nombre Factura</Label>
                     <Input id="nombre" name="nombre" type="text"></Input>
@@ -39,7 +39,7 @@ export default async function Home() {
                 </div>
                 <div>
                     <Label htmlFor="descripcion" className="block font-semibold text-sm mb-2">Descripción</Label>
-                    <Textarea></Textarea>
+                    <Textarea id="descripcion" name="descripcion"></Textarea>
                 </div>
                 <div>
                     <Button className="w-full font-semibold">
