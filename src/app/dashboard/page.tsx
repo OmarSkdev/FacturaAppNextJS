@@ -1,3 +1,5 @@
+import { db } from "@/db";
+
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge"
 
@@ -12,10 +14,15 @@ import {
     TableHeader,
     TableRow,
   } from "@/components/ui/table"
+import { Facturas } from "@/db/schema";
 
   
 
-export default function Home() {
+export default async function Home() {
+
+  const resultados = await db.select().from(Facturas);
+    console.log(resultados);
+
   return (
     
       <main className="flex flex-col justify-center h-full text-center gap-6 max-w-5xl mx-auto my-12" >
@@ -44,31 +51,41 @@ export default function Home() {
                   </TableRow>
               </TableHeader>
               <TableBody>
-                  <TableRow>
-                      <TableCell className="font-medium text-left">
-                        <span className="font-semibold">
-                        30/10/2024
-                        </span>
+                {resultados.map(resultado => {
+                  return (
+                  <TableRow key={resultado.id}>
+                      <TableCell className="font-medium text-left p-0">
+                        <Link href={`/facturas/${resultado.id}`} className="block p-4 font-semibold">
+                        { new Date(resultado.creadoTs).toLocaleDateString()}
+                        </Link>
                       </TableCell>
-                      <TableCell className="text-left">
-                        <span className="font-semibold">
-                        Omar Schmidt K.
-                        </span>
+                      <TableCell className="text-left p-0">
+                        <Link href={`/facturas/${resultado.id}`} className="p-4 block font-semibold">
+                          Omar Schmidt K.
+                        </Link>
                       </TableCell>
-                      <TableCell className="text-left">
-                        <span className="">
-                        omar.sk80@gmail.com
-                        </span>
+                      <TableCell className="text-left p-0">
+                        <Link href={`/facturas/${resultado.id}`} className="block p-4 ">
+                          omar.sk80@mail.com
+                        </Link>
                       </TableCell>
-                      <TableCell className="text-left">
-                        <Badge className="rounded-full">Activo</Badge>                        
+                      <TableCell className="text-center p-0">
+                        <Link className="block p-4" href={`/facturas/${resultado.id}`} >
+                        <Badge className="rounded-full">
+                          {resultado.estados}
+                        </Badge>
+                        </Link>                        
                       </TableCell>
-                      <TableCell className="text-right">
-                        <span className="font-semibold">
-                        $250.000
-                        </span>
+                      <TableCell className="text-right p-0">
+                        
+                        <Link href={`/facturas/${resultado.id}`} className="block p-4 font-semibold">
+                        ${resultado.valor}
+                        </Link>
+                        
                       </TableCell>
                   </TableRow>
+                  )}
+                )}
               </TableBody>
           </Table>
 

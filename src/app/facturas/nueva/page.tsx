@@ -1,6 +1,5 @@
-import { sql } from "drizzle-orm";
-import { db } from "@/db";
 "use client";
+
 
 import { Label } from "@/components/ui/label";
 import { Input } from "../../../components/ui/input";
@@ -15,11 +14,10 @@ import { crearAccion } from "../../../../acciones";
 import { SyntheticEvent, useState, startTransition } from "react";
 
 import Form from 'next/form';
-  
-
 
 export default function Home() {
-
+    
+    
     const [estado, setEstado] = useState('listo');
     async function manejoEnvio(event: SyntheticEvent) {
         if ( estado === 'pendiente') {
