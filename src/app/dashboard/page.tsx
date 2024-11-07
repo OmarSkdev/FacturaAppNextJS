@@ -15,6 +15,7 @@ import {
     TableRow,
   } from "@/components/ui/table"
 import { Facturas } from "@/db/schema";
+import { cn } from "@/lib/utils";
 
   
 
@@ -46,8 +47,8 @@ export default async function Home() {
                       <TableHead className="w-[100px] p-4">Fecha</TableHead>
                       <TableHead className="p-4">Cliente</TableHead>
                       <TableHead className="p-4">Email</TableHead>
-                      <TableHead className="p-4">Estado</TableHead>
-                      <TableHead className="text-right">Valor</TableHead>
+                      <TableHead className="text-center p-4">Estado</TableHead>
+                      <TableHead className="text-right p-4">Valor</TableHead>
                   </TableRow>
               </TableHeader>
               <TableBody>
@@ -71,9 +72,15 @@ export default async function Home() {
                       </TableCell>
                       <TableCell className="text-center p-0">
                         <Link className="block p-4" href={`/facturas/${resultado.id}`} >
-                        <Badge className="rounded-full">
-                          {resultado.estados}
-                        </Badge>
+                          <Badge className={cn(
+                            "rounded-full capitalize",
+                            resultado.estados === 'no pagada' && 'bg-green-500',
+                            resultado.estados === 'pagada' && 'bg-green-600',
+                            resultado.estados === 'nula' && 'bg-zinc-700',
+                            resultado.estados === 'incobrable' && 'bg-red-600'
+                          )}>
+                            {resultado.estados}
+                          </Badge>
                         </Link>                        
                       </TableCell>
                       <TableCell className="text-right p-0">
