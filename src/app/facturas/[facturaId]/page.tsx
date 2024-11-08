@@ -1,7 +1,7 @@
+import { notFound } from "next/navigation";
+
 import { Badge } from "@/components/ui/badge";
 import { db } from "@/db";
-
-
 
 import { Facturas } from "@/db/schema";
 import { cn } from "@/lib/utils";
@@ -13,10 +13,18 @@ import { eq } from "drizzle-orm";
 export default async function FacturaPage({ params }: {params: { facturaId:string; }}) {
   const facturaId = parseInt(params.facturaId);
 
+  if ( isNaN(facturaId)) {
+    throw new Error('iNVÁLIDA ID FACTURA')
+  }
+
   const [resultado] = await db.select()
     .from(Facturas)
     .where(eq(Facturas.id, facturaId))
     .limit(1)
+
+  if ( !resultado) {
+    notFound();
+  }
 
     //console.log('resultado', resultado);
 
