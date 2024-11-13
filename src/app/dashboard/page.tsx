@@ -2,6 +2,7 @@ import { db } from "@/db";
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge"
+import Contenedor from "@/components/Container";
 
 import Link from "next/link";
 import { CirclePlus } from "lucide-react";
@@ -26,8 +27,11 @@ export default async function Home() {
 
   return (
     
-      <main className="flex flex-col justify-center h-full text-center gap-6 max-w-5xl mx-auto my-12" >
-        <div className="flex justify-between">
+      <main className="h-full" >
+        <Contenedor>
+
+        
+        <div className="flex justify-between mb-6">
             <h1 className="text-3xl font-semibold">Facturas</h1> 
             <p>
                 <Button className="inline-flex gap-2" variant="ghost" asChild>
@@ -95,7 +99,7 @@ export default async function Home() {
                 )}
               </TableBody>
           </Table>
-
+        </Contenedor>
         
       </main>      
     

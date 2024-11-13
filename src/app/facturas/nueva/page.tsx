@@ -14,6 +14,7 @@ import { crearAccion } from "../../../../acciones";
 import { SyntheticEvent, useState, startTransition } from "react";
 
 import Form from 'next/form';
+import Contenedor from "@/components/Container";
 
 export default function Home() {
     
@@ -45,8 +46,9 @@ export default function Home() {
 
     return (
 
-        <main className="flex flex-col justify-center h-full gap-6 max-w-5xl mx-auto my-12" >
-            <div className="flex justify-between">
+        <main className="h-full" >
+            <Contenedor>
+            <div className="flex justify-between mb-6">
                 <h1 className="text-3xl font-semibold">Crear Factura</h1>
 
             </div>
@@ -75,7 +77,7 @@ export default function Home() {
                     <SubmitButton />
                 </div>
             </Form>
-
+         </Contenedor>
 
 
 
