@@ -8,8 +8,7 @@ const Header = () => {
         <header className="mt-8 mb-12">
             <Contenedor>
                 <div className="flex justify-between items-center gap-4">
-                    <p className="font-bold">
-                        Factura Aplicación
+                    <p className="font-bold">                        
                         <Link href='/dashboard'>Factura App</Link>
                     </p>
                     <div>

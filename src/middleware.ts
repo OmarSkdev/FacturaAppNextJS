@@ -2,6 +2,8 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
 const estaPublico = createRouteMatcher([
   '/',
+  '/sign-in(.*)',
+  '/sign-up(.*)',
 ])
 
 /* const estaProtegido = createRouteMatcher([
