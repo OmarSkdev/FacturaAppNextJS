@@ -9,6 +9,7 @@ export const Facturas = pgTable('facturas', {
     creadoTs: timestamp('creadoTs').defaultNow().notNull(),
     valor: integer('valor').notNull(),
     descripcion: text('descripcion').notNull(),
+    userId: text('userId').notNull(),
     estados: estadoEnum('estados').notNull()
     
    

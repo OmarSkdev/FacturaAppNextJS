@@ -8,6 +8,20 @@
       "when": 1730503582411,
       "tag": "0000_rare_madripoor",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1731711451324,
+      "tag": "0001_mute_romulus",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1731711917631,
+      "tag": "0002_clear_husk",
+      "breakpoints": true
     }
   ]
 }

@@ -19,6 +19,7 @@ export async function crearAccion(formData: FormData) {
         .values({
             valor,
             descripcion,
+            userId,
             estados: 'no pagada'
         })
         .returning({
