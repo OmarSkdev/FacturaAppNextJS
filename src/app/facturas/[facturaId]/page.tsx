@@ -5,12 +5,17 @@ import { db } from "@/db";
 
 import { Facturas } from "@/db/schema";
 import { cn } from "@/lib/utils";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
+import { auth } from "@clerk/nextjs/server";
 
 
   
 
 export default async function FacturaPage({ params }: {params: { facturaId:string; }}) {
+
+  const { userId } = await auth();
+  if (!userId) return;
+
   const facturaId = parseInt(params.facturaId);
 
   if ( isNaN(facturaId)) {
@@ -19,7 +24,11 @@ export default async function FacturaPage({ params }: {params: { facturaId:strin
 
   const [resultado] = await db.select()
     .from(Facturas)
-    .where(eq(Facturas.id, facturaId))
+    .where(
+    and(eq(Facturas.id, facturaId),
+        eq(Facturas.userId, userId)
+    )
+    )
     .limit(1)
 
   if ( !resultado) {

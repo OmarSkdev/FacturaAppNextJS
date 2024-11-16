@@ -17,13 +17,20 @@ import {
   } from "@/components/ui/table"
 import { Facturas } from "@/db/schema";
 import { cn } from "@/lib/utils";
+import { auth } from "@clerk/nextjs/server";
+import { eq } from "drizzle-orm";
 
   
 
 export default async function Home() {
 
-  const resultados = await db.select().from(Facturas);
-    console.log(resultados);
+  const { userId } = await auth();
+  if (!userId) return;
+
+  const resultados = await db.select()
+    .from(Facturas)
+    .where(eq(Facturas.userId, userId));
+    // console.log(resultados);
 
   return (
     
