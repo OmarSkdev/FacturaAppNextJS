@@ -1,14 +1,21 @@
 import { notFound } from "next/navigation";
 
 import { Badge } from "@/components/ui/badge";
+
+import Contenedor from "@/components/Container";
+
 import { db } from "@/db";
 
 import { Facturas } from "@/db/schema";
 import { cn } from "@/lib/utils";
 import { and, eq } from "drizzle-orm";
 import { auth } from "@clerk/nextjs/server";
+import { ChevronDown } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 
-
+import { ESTADOS_DISPONIBLES } from "@/app/data/facturas";
+import { actualizarAccionEstados } from "../../../../acciones";
   
 
 export default async function FacturaPage({ params }: {params: { facturaId:string; }}) {
@@ -41,7 +48,8 @@ export default async function FacturaPage({ params }: {params: { facturaId:strin
     
   return (
     
-      <main className="h-full max-w-5xl mx-auto my-12" >
+      <main className="w-full h-full " >
+        <Contenedor>
         <div className="flex justify-between mb-8">
             <h1 className="flex items-center gap-4 text-3xl font-semibold">
               Facturas {facturaId}
@@ -54,10 +62,33 @@ export default async function FacturaPage({ params }: {params: { facturaId:strin
                 )}>
                 {resultado.estados}
               </Badge>
-            </h1> 
-            <p>
-
-            </p>            
+            </h1>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button className="flex items-center gap-2" variant='outline'>
+                  Cambiar Estado
+                  <ChevronDown className="w-4 h-auto" />
+              </Button>  
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {ESTADOS_DISPONIBLES.map(estados => {
+                  return (
+                    <DropdownMenuItem key={estados.id}>
+                      <form action={actualizarAccionEstados}>
+                        <input type="hidden" name="id" value={facturaId} />
+                        <input type="hidden" name="estados" value={estados.id} />
+                        <button>{estados.label}</button>
+                      </form>
+                      
+                    </DropdownMenuItem>
+                  )
+                })}
+                {/* <DropdownMenuLabel>Estado</DropdownMenuLabel>
+                <DropdownMenuSeparator /> */}
+                
+              </DropdownMenuContent>
+            </DropdownMenu>
+                    
         </div>
         <p className="text-3xl mb-3">
           ${ (resultado.valor / 100 ).toFixed(2) }
@@ -108,7 +139,8 @@ export default async function FacturaPage({ params }: {params: { facturaId:strin
 
             </span>
           </li>
-        </ul>    
+        </ul>
+        </Contenedor>    
       </main>      
     
   );

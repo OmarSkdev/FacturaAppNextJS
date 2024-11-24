@@ -1,9 +1,14 @@
 "use server";
 
 import { db } from "@/db";
-import { Facturas } from "@/db/schema";
+import { Facturas, Estados } from "@/db/schema";
 import { redirect } from "next/navigation";
+
+import { revalidatePath } from "next/cache";
+
 import { auth } from "@clerk/nextjs/server";
+import { and, eq } from "drizzle-orm";
+
 
 export async function crearAccion(formData: FormData) {
     const { userId } = await auth();
@@ -27,4 +32,28 @@ export async function crearAccion(formData: FormData) {
         })
     redirect(`/facturas/${resultados[0].id}`)   
     
+}
+
+export async function actualizarAccionEstados(formData: FormData) {
+    const { userId} = await auth();
+
+    if (!userId){
+        return;
+    }
+
+    const id = formData.get('id') as string;
+    const estados = formData.get('estados') as Estados;
+
+    const resultados = await db.update(Facturas)
+    .set({ estados })
+    .where(
+        and(
+            eq(Facturas.id, parseInt(id)),
+            eq(Facturas.userId, userId)
+        )
+    )
+
+    //console.log('resultados', resultados);
+    revalidatePath(`/facturas/${id}`, 'page')
+
 }
