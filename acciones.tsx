@@ -10,7 +10,7 @@ import { auth } from "@clerk/nextjs/server";
 import { and, eq } from "drizzle-orm";
 
 
-export async function crearAccion(formData: FormData) {
+export  async function crearAccion(formData: FormData) {
     const { userId } = await auth();
     // console.log('datos Formulario:', formData);
     const valor = Math.floor(parseFloat(String(formData.get('valor')))*1000);
