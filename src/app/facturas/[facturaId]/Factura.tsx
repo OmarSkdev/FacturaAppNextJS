@@ -1,5 +1,5 @@
 "use client";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Ellipsis, Trash2 } from "lucide-react";
 import { Facturas } from "@/db/schema";
 import { Badge } from "@/components/ui/badge";
 import Contenedor from "@/components/Container";
@@ -15,7 +15,7 @@ import { DropdownMenu,
 import { Button } from "@/components/ui/button";
 
 import { ESTADOS_DISPONIBLES } from "@/app/data/facturas";
-import { actualizarAccionEstados } from "../../../../acciones";
+import { actualizarAccionEstados, eliminarFactura } from "../../../../acciones";
 import { useOptimistic } from "react";
   
 interface FacturaProps {
@@ -69,10 +69,12 @@ export default function Factura({ factura }: FacturaProps) {
                 {currentEstado}
               </Badge>
             </h1>
+            <div className="flex gap-4">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button className="flex items-center gap-2" variant='outline'>
-                  Cambiar Estado
+                  
+                    Cambiar Estado
                   <ChevronDown className="w-4 h-auto" />
               </Button>  
               </DropdownMenuTrigger>
@@ -94,7 +96,34 @@ export default function Factura({ factura }: FacturaProps) {
                 
               </DropdownMenuContent>
             </DropdownMenu>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button className="flex items-center gap-2" variant='outline'>
+                  <span className="sr-only">Más Opciones</span>
+                  <Ellipsis className="w-4 h-auto" />
                     
+              </Button>  
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>  
+                  
+                    <DropdownMenuItem>
+                      <form action={eliminarFactura}>
+                        <input type="hidden" name="id" value={factura.id} />                        
+                        <button className="flex items-center gap-1">
+                          <Trash2 className="w-4 h-auto"/>
+                          Eliminar factura
+                        </button>
+                      </form>                      
+                    </DropdownMenuItem>
+                  
+                
+                {/* <DropdownMenuLabel>Estado</DropdownMenuLabel>
+                <DropdownMenuSeparator /> */}
+                
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>          
         </div>
         <p className="text-3xl mb-3">
           ${ (factura.valor / 100 ).toFixed(2) }

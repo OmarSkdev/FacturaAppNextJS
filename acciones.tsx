@@ -57,3 +57,26 @@ export async function actualizarAccionEstados(formData: FormData) {
     revalidatePath(`/facturas/${id}`, 'page')
 
 }
+
+export async function eliminarFactura(formData: FormData) {
+    const { userId} = await auth();
+
+    if (!userId){
+        return;
+    }
+
+    const id = formData.get('id') as string;
+
+    const resultados = await db.delete(Facturas)
+    
+    .where(
+        and(
+            eq(Facturas.id, parseInt(id)),
+            eq(Facturas.userId, userId)
+        )
+    )
+
+    //console.log('resultados', resultados);
+    redirect('/dashboard')
+
+}
