@@ -14,6 +14,17 @@ import { DropdownMenu,
 
 import { Button } from "@/components/ui/button";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
+
 import { ESTADOS_DISPONIBLES } from "@/app/data/facturas";
 import { actualizarAccionEstados, eliminarFactura } from "../../../../acciones";
 import { useOptimistic } from "react";
@@ -54,7 +65,7 @@ export default function Factura({ factura }: FacturaProps) {
 
   return (
     
-      <main className="w-full h-full " >
+      <main className="w-full h-full">
         <Contenedor>
         <div className="flex justify-between mb-8">
             <h1 className="flex items-center gap-4 text-3xl font-semibold">
@@ -97,32 +108,54 @@ export default function Factura({ factura }: FacturaProps) {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button className="flex items-center gap-2" variant='outline'>
-                  <span className="sr-only">Más Opciones</span>
-                  <Ellipsis className="w-4 h-auto" />
-                    
-              </Button>  
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>  
-                  
-                    <DropdownMenuItem>
-                      <form action={eliminarFactura}>
-                        <input type="hidden" name="id" value={factura.id} />                        
-                        <button className="flex items-center gap-1">
-                          <Trash2 className="w-4 h-auto"/>
+            <Dialog>
+              
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button className="flex items-center gap-2" variant='outline'>
+                    <span className="sr-only">Más Opciones</span>
+                    <Ellipsis className="w-4 h-auto" />
+                      
+                </Button>  
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+
+                  <DropdownMenuItem>
+                    <DialogTrigger asChild>
+                      <button className="flex items-center gap-1">
+                        <Trash2 className="w-4 h-auto" />
+                        Eliminar factura
+                      </button>
+                    </DialogTrigger>
+                 
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              <DialogContent className="bg-white">
+                <DialogHeader>
+                  <DialogTitle className="text-2xl">
+                      Eliminar Factura?
+                  </DialogTitle>
+                  <DialogDescription>
+                    deseas eli
+                  </DialogDescription>
+                  <DialogFooter>
+                  <form className="flex justify-center" action={eliminarFactura}>
+                      <input type="hidden" name="id" value={factura.id} />
+                        <Button variant="destructive" className="flex items-center gap-2">
+                          <Trash2 className="w-4 h-auto" />
                           Eliminar factura
-                        </button>
-                      </form>                      
-                    </DropdownMenuItem>
-                  
-                
-                {/* <DropdownMenuLabel>Estado</DropdownMenuLabel>
-                <DropdownMenuSeparator /> */}
-                
-              </DropdownMenuContent>
-            </DropdownMenu>
+                        </Button>
+                    </form>
+                  </DialogFooter>
+                 
+                </DialogHeader>
+              </DialogContent>
+            </Dialog>
+
+
+            
           </div>          
         </div>
         <p className="text-3xl mb-3">
