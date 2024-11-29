@@ -1,6 +1,6 @@
 "use client";
 import { ChevronDown, Ellipsis, Trash2 } from "lucide-react";
-import { Facturas } from "@/db/schema";
+import { Clientes, Facturas } from "@/db/schema";
 import { Badge } from "@/components/ui/badge";
 import Contenedor from "@/components/Container";
 import { cn } from "@/lib/utils";
@@ -30,7 +30,10 @@ import { actualizarAccionEstados, eliminarFactura } from "../../../../acciones";
 import { useOptimistic } from "react";
   
 interface FacturaProps {
-    factura: typeof Facturas.$inferSelect
+    factura: typeof Facturas.$inferSelect & {
+      cliente: typeof Clientes.$inferSelect
+    }
+
 }
  
 
@@ -189,7 +192,7 @@ export default function Factura({ factura }: FacturaProps) {
                 Nombre Cliente
             </strong>
             <span>
-
+                  {factura.cliente.nombre}
             </span>
           </li>
           <li className="flex gap-4">
@@ -197,7 +200,7 @@ export default function Factura({ factura }: FacturaProps) {
                 Email
             </strong>
             <span>
-
+                  {factura.cliente.email}
             </span>
           </li>
           <li className="flex gap-4">

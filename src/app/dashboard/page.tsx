@@ -15,7 +15,7 @@ import {
     TableHeader,
     TableRow,
   } from "@/components/ui/table"
-import { Facturas } from "@/db/schema";
+import { Clientes, Facturas } from "@/db/schema";
 import { cn } from "@/lib/utils";
 import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
@@ -29,8 +29,16 @@ export default async function Home() {
 
   const resultados = await db.select()
     .from(Facturas)
+    .innerJoin(Clientes, eq(Facturas.clienteId, Clientes.id))    
     .where(eq(Facturas.userId, userId));
     // console.log(resultados);
+
+  const facturas = resultados?.map(({facturas, clientes}) => {
+    return {
+      ...facturas,
+      cliente: clientes
+    }
+    })
 
   return (
     
@@ -63,7 +71,7 @@ export default async function Home() {
                   </TableRow>
               </TableHeader>
               <TableBody>
-                {resultados.map(resultado => {
+                {facturas.map(resultado => {
                   return (
                   <TableRow key={resultado.id}>
                       <TableCell className="font-medium text-left p-0">
@@ -73,12 +81,12 @@ export default async function Home() {
                       </TableCell>
                       <TableCell className="text-left p-0">
                         <Link href={`/facturas/${resultado.id}`} className="p-4 block font-semibold">
-                          Omar Schmidt K.
+                          { resultado.cliente.nombre}
                         </Link>
                       </TableCell>
                       <TableCell className="text-left p-0">
                         <Link href={`/facturas/${resultado.id}`} className="block p-4 ">
-                          omar.sk80@mail.com
+                          { resultado.cliente.email}
                         </Link>
                       </TableCell>
                       <TableCell className="text-center p-0">

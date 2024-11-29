@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { db } from "@/db";
-import { Facturas } from "@/db/schema";
+import { Clientes, Facturas } from "@/db/schema";
 
 import { and, eq } from "drizzle-orm";
 import { auth } from "@clerk/nextjs/server";
@@ -24,6 +24,7 @@ export default async function FacturaPage( {
 
   const [resultado] = await db.select()
     .from(Facturas)
+    .innerJoin(Clientes, eq(Facturas.clienteId, Clientes.id))
     .where(
       and(eq(Facturas.id, facturaId),
         eq(Facturas.userId, userId)
@@ -34,10 +35,15 @@ export default async function FacturaPage( {
   if (!resultado) {
     notFound();
   }
+
+  const facturas = {
+    ...resultado.facturas,
+    cliente: resultado.clientes
+  }
   //console.log('resultado', resultado);
 
   //resultado.estados = 'no pagada'
 
-  return <Factura factura={resultado} />;
+  return <Factura factura={facturas} />;
 
 }
