@@ -1,1 +1,0 @@
-ALTER TABLE "facturas" ADD COLUMN "usuarioId" text NOT NULL;

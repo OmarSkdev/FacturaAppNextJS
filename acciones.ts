@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/db";
-import { Facturas, Estados } from "@/db/schema";
+import { Facturas, Estados, Clientes } from "@/db/schema";
 import { redirect } from "next/navigation";
 
 import { revalidatePath } from "next/cache";
@@ -13,18 +13,34 @@ import { and, eq } from "drizzle-orm";
 export  async function crearAccion(formData: FormData) {
     const { userId } = await auth();
     // console.log('datos Formulario:', formData);
-    const valor = Math.floor(parseFloat(String(formData.get('valor')))*1000);
-    const descripcion = formData.get('descripcion') as string;
+    
 
     if ( !userId) {
         return;
     }
+
+    const valor = Math.floor(parseFloat(String(formData.get('valor')))*1000);
+    const descripcion = formData.get('descripcion') as string;
+    const nombre = formData.get('nombre') as string;
+    const email = formData.get('email') as string;
+
+    const [cliente] = await db.insert(Clientes)
+        .values({
+            nombre,
+            email,
+            userId
+        })
+        .returning({
+            id:Clientes.id
+        })
+
 
     const resultados = await db.insert(Facturas)
         .values({
             valor,
             descripcion,
             userId,
+            clienteId: cliente.id,
             estados: 'no pagada'
         })
         .returning({
