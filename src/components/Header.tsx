@@ -8,10 +8,17 @@ const Header = () => {
         <header className="mt-8 mb-12">
             <Contenedor>
                 <div className="flex justify-between items-center gap-4">
-                    <div>
+                    <div className="flex items-center gap-4">
                         <p className="font-bold">                        
                             <Link href='/dashboard'>Factura App</Link>
                         </p>
+                        <span className="text-slate-300">/</span>
+                        <SignedIn>
+                            <span className="ml-2">
+                                <OrganizationSwitcher
+                                    afterCreateOrganizationUrl="/dashboard" />
+                            </span>
+                        </SignedIn>
                         
                     </div>                
                     <div>
