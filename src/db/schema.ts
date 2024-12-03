@@ -5,11 +5,11 @@ import { integer, pgEnum, pgTable, serial, text, timestamp } from "drizzle-orm/p
 import { ESTADOS_DISPONIBLES } from "@/app/data/facturas";
 
 export type Estados = typeof ESTADOS_DISPONIBLES[number]["id"];
-export const estadoEnum = pgEnum('estados', ['no pagada', 'pagada','nula','incobrable'])
+//export const estadoEnum = pgEnum('estados', ['no pagada', 'pagada','nula','incobrable'])
 
-//const estados = ESTADOS_DISPONIBLES.map(( { id }) => id) as Array<Estados>
+const estados = ESTADOS_DISPONIBLES.map(( { id }) => id) as Array<Estados>
 
-//export const estadoEnum = pgEnum('estados', estados as [Estados, ... Array<Estados>])
+export const estadoEnum = pgEnum('estados', estados as [Estados, ... Array<Estados>])
 
 export const Facturas = pgTable('facturas', {
     id: serial('id').primaryKey().notNull(),

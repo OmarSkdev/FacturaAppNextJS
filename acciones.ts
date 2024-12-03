@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
 import { auth } from "@clerk/nextjs/server";
-import { and, eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 
 
 export  async function crearAccion(formData: FormData) {
@@ -53,7 +53,7 @@ export  async function crearAccion(formData: FormData) {
 }
 
 export async function actualizarAccionEstados(formData: FormData) {
-    const { userId} = await auth();
+    const { userId, orgId} = await auth();
 
     if (!userId){
         return;
@@ -62,14 +62,28 @@ export async function actualizarAccionEstados(formData: FormData) {
     const id = formData.get('id') as string;
     const estados = formData.get('estados') as Estados;
 
-    const resultados = await db.update(Facturas)
-    .set({ estados })
-    .where(
-        and(
-            eq(Facturas.id, parseInt(id)),
-            eq(Facturas.userId, userId)
-        )
-    )
+    if ( orgId ) {
+        await db.update(Facturas)
+            .set({ estados })
+            .where(
+                and(
+                    eq(Facturas.id, parseInt(id)),
+                    eq(Facturas.organizacionId, orgId)
+                ),
+            );
+
+    } else {
+        await db.update(Facturas)
+            .set({ estados })
+            .where(
+                and(
+                    eq(Facturas.id, parseInt(id)),
+                    eq(Facturas.userId, userId),
+                    isNull(Facturas.organizacionId)
+                )
+            )
+    }    
+    
 
     //console.log('resultados', resultados);
     revalidatePath(`/facturas/${id}`, 'page')
@@ -77,7 +91,7 @@ export async function actualizarAccionEstados(formData: FormData) {
 }
 
 export async function eliminarFactura(formData: FormData) {
-    const { userId} = await auth();
+    const { userId, orgId} = await auth();
 
     if (!userId){
         return;
@@ -85,14 +99,25 @@ export async function eliminarFactura(formData: FormData) {
 
     const id = formData.get('id') as string;
 
-    const resultados = await db.delete(Facturas)
+    if (orgId) {
+        await db.delete(Facturas)
+            .where(
+                and(
+                    eq(Facturas.id, parseInt(id)),
+                    eq(Facturas.organizacionId, orgId)
+                )
+            )
+    } else {
+        await db.delete(Facturas)
+            .where(
+                and(
+                    eq(Facturas.id, parseInt(id)),
+                    eq(Facturas.userId, userId),
+                    isNull(Facturas.organizacionId)
+                )
+            )
+    }
     
-    .where(
-        and(
-            eq(Facturas.id, parseInt(id)),
-            eq(Facturas.userId, userId)
-        )
-    )
 
     //console.log('resultados', resultados);
     redirect('/dashboard')

@@ -18,21 +18,33 @@ import {
 import { Clientes, Facturas } from "@/db/schema";
 import { cn } from "@/lib/utils";
 import { auth } from "@clerk/nextjs/server";
-import { eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 
   
 
 export default async function Home() {
 
-  const { userId } = await auth();
+  const { userId, orgId } = await auth();
   if (!userId) return;
 
-  const resultados = await db.select()
-    .from(Facturas)
-    .innerJoin(Clientes, eq(Facturas.clienteId, Clientes.id))    
-    .where(eq(Facturas.userId, userId));
-    // console.log(resultados);
-
+  let resultados;
+  if ( orgId) {
+    resultados = await db.select()
+      .from(Facturas)
+      .innerJoin(Clientes, eq(Facturas.clienteId, Clientes.id))    
+      .where(eq(Facturas.organizacionId, orgId));
+      // console.log(resultados);
+  } else {
+    resultados = await db.select()
+      .from(Facturas)
+      .innerJoin(Clientes, eq(Facturas.clienteId, Clientes.id))    
+      .where(
+        and(
+          eq(Facturas.userId, userId),
+          isNull(Facturas.organizacionId)
+        )
+      );
+  }
   const facturas = resultados?.map(({facturas, clientes}) => {
     return {
       ...facturas,
