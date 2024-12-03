@@ -8,6 +8,13 @@
       "when": 1732825760395,
       "tag": "0000_nifty_sage",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1733189913679,
+      "tag": "0001_striped_nehzno",
+      "breakpoints": true
     }
   ]
 }

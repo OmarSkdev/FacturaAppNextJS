@@ -17,6 +17,7 @@ export const Facturas = pgTable('facturas', {
     valor: integer('valor').notNull(),
     descripcion: text('descripcion').notNull(),
     userId: text('userId').notNull(),
+    organizacionId: text('organizacionId'),
     clienteId: integer('clienteId').notNull().references(() => Clientes.id),
     estados: estadoEnum('estados').notNull()  
 })
@@ -26,5 +27,6 @@ export const Clientes = pgTable('clientes', {
     creadoTs: timestamp('creadoTs').defaultNow().notNull(),
     nombre: text('nombre').notNull(),
     email: text('email').notNull(),
-    userId: text('userId').notNull()  
+    userId: text('userId').notNull(),
+    organizacionId: text('organizacionId')
 })

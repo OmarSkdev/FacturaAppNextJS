@@ -11,7 +11,7 @@ import { and, eq } from "drizzle-orm";
 
 
 export  async function crearAccion(formData: FormData) {
-    const { userId } = await auth();
+    const { userId, orgId } = await auth();
     // console.log('datos Formulario:', formData);
     
 
@@ -28,7 +28,8 @@ export  async function crearAccion(formData: FormData) {
         .values({
             nombre,
             email,
-            userId
+            userId,
+            organizacionId: orgId || null
         })
         .returning({
             id:Clientes.id
@@ -41,7 +42,8 @@ export  async function crearAccion(formData: FormData) {
             descripcion,
             userId,
             clienteId: cliente.id,
-            estados: 'no pagada'
+            estados: 'no pagada',
+            organizacionId: orgId || null
         })
         .returning({
             id: Facturas.id
